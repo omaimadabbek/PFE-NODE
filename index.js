@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const multer = require("multer");
 app.use(express.static("images"));
-
+/////
 app.get("http://localhost:5000/admin"),
   (req, res) => {
     res.json({ admins: ["adminOne", "adminTwo", "adminThree"] });
@@ -51,12 +51,9 @@ app.get("/admin/:id", async (req, res) => {
 
 app.get("/admin/:email/:mot_de_passe", async (req, res) => {
   try {
-
-    const { email , mot_de_passe} = req.params;
-    let sql = `SELECT* FROM admin WHERE email='${email}' and  mot_de_passe='${mot_de_passe}'`
-    const allAdmin = await pool.query(
-      sql
-    );
+    const { email, mot_de_passe } = req.params;
+    let sql = `SELECT* FROM admin WHERE email='${email}' and  mot_de_passe='${mot_de_passe}'`;
+    const allAdmin = await pool.query(sql);
     res.json(allAdmin.rows);
   } catch (err) {
     console.error(err.message);
@@ -137,17 +134,15 @@ app.get("/client/:id", async (req, res) => {
 
 app.get("/client/:email/:mot_de_passe", async (req, res) => {
   try {
-
-    const { email , mot_de_passe} = req.params;
-    let sql = `SELECT* FROM client WHERE email='${email}' and  mot_de_passe='${mot_de_passe}'`
-    const allClient = await pool.query(
-      sql
-    );
+    const { email, mot_de_passe } = req.params;
+    let sql = `SELECT* FROM client WHERE email='${email}' and  mot_de_passe='${mot_de_passe}'`;
+    const allClient = await pool.query(sql);
     res.json(allClient.rows);
   } catch (err) {
     console.error(err.message);
   }
 });
+
 //update a client
 app.put("/client/:id", async (req, res) => {
   try {
@@ -326,12 +321,14 @@ app.post("/Commandes", async (req, res) => {
       req.body;
     const date = new Date();
     const dateString = date.toISOString().substring(0, 10);
-   const newCommandes = await pool.query(
+    const newCommandes = await pool.query(
       `INSERT INTO commandes (date_cmd,totalcommande,id_client,etat_commande,mdv,adresse)
              VALUES ('${dateString}','${totalcommande}','${id_client}','${etat_commande}','${mdv}','${adresse}') RETURNING* `
     );
-    if(newCommandes.rowCount>0 ){res.json(newCommandes);}
-   // 
+    if (newCommandes.rowCount > 0) {
+      res.json(newCommandes);
+    }
+    //
   } catch (err) {
     console.error(err.message);
   }
@@ -382,7 +379,6 @@ app.get("/commandes", async (req, res) => {
     console.error(err.message);
   }
 });
-
 
 app.post("/detail_commandes", async (req, res) => {
   try {
