@@ -1,92 +1,20 @@
 const express = require("express");
 const app = express();
 const multer = require("multer");
-app.use(express.static("images"));
-/////
-app.get("http://localhost:5000/admin"),
-  (req, res) => {
-    res.json({ admins: ["adminOne", "adminTwo", "adminThree"] });
-  };
 const cors = require("cors");
 const pool = require("./db");
+///
+const Admin = require("./Admin");
 
 //middleware
 app.use(cors());
 app.use(express.json());
 
 //ROUTES
+//**** Admin */
+app.post(Admin);
 
-//create a admin
-app.post("/admin", async (req, res) => {
-  try {
-    const { nom, prenom, mot_de_passe, email, type } = req.body;
-    const newAdmin = await pool.query(
-      `INSERT INTO admin (nom,prenom,mot_de_passe,email,type) 
-            VALUES ('${nom}','${prenom}','${mot_de_passe}','${email}','${type}') RETURNING* `
-    );
-    res.json(newAdmin);
-  } catch (err) {
-    console.error(err.message);
-  }
-});
-//get all admin
-app.get("/admin", async (req, res) => {
-  try {
-    const allAdmin = await pool.query(`SELECT*FROM admin`);
-    res.json(allAdmin.rows);
-  } catch (err) {
-    console.error(err.message);
-  }
-});
-//get a admin
-app.get("/admin/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const admin = await pool.query(`SELECT *FROM admin WHERE admin_id = ${id}`);
-    res.json(admin.rows);
-  } catch (err) {
-    console.error(err.message);
-  }
-});
-
-app.get("/admin/:email/:mot_de_passe", async (req, res) => {
-  try {
-    const { email, mot_de_passe } = req.params;
-    let sql = `SELECT* FROM admin WHERE email='${email}' and  mot_de_passe='${mot_de_passe}'`;
-    const allAdmin = await pool.query(sql);
-    res.json(allAdmin.rows);
-  } catch (err) {
-    console.error(err.message);
-  }
-});
-
-//update a admin
-app.put("/admin/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { nom, prenom, mot_de_passe, email, type } = req.body;
-    const updateAdmin = await pool.query(
-      `UPDATE admin SET nom='${nom}', prenom='${prenom}', mot_de_passe='${mot_de_passe}', email='${email}',type='${type}'
-             WHERE admin_id=${id}`
-    );
-    res.json("admin was update!");
-  } catch (error) {
-    console.error(err.message);
-  }
-});
-//delete a admin
-app.delete("/admin/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const deleteAdmin = await pool.query(
-      `DELETE FROM admin WHERE admin_id = ${id}`
-    );
-
-    res.json("admin was deleted");
-  } catch (err) {
-    console.log(err.message);
-  }
-});
+app.use(express.static("images"));
 
 //create a client
 app.post("/client", async (req, res) => {
