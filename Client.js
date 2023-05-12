@@ -57,7 +57,7 @@ app.get("/client/:email/:mot_de_passe", async (req, res) => {
   }
 });
 
-//update a client
+//***update a client*/
 app.put("/client/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -78,7 +78,7 @@ app.put("/client/:id", async (req, res) => {
     console.error(err.message);
   }
 });
-//delete a client
+//***delete a client*/
 app.delete("/client/:id", async (req, res) => {
   try {
     const { id } = req.params;

@@ -2,7 +2,7 @@ const express = require("express");
 const pool = require("./db");
 const app = express.Router();
 
-//create a admin
+//***create a admin*/
 app.post("/admin", async (req, res) => {
   try {
     const { nom, prenom, mot_de_passe, email, type } = req.body;
@@ -15,7 +15,7 @@ app.post("/admin", async (req, res) => {
     console.error(err.message);
   }
 });
-//get all admin
+//***get all admin*/
 app.get("/admin", async (req, res) => {
   try {
     const allAdmin = await pool.query(`SELECT*FROM admin`);
@@ -24,7 +24,7 @@ app.get("/admin", async (req, res) => {
     console.error(err.message);
   }
 });
-//get a admin
+//***get a admin*/
 app.get("/admin/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -46,7 +46,7 @@ app.get("/admin/:email/:mot_de_passe", async (req, res) => {
   }
 });
 
-//update a admin
+//***update a admin*/
 app.put("/admin/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -60,7 +60,7 @@ app.put("/admin/:id", async (req, res) => {
     console.error(err.message);
   }
 });
-//delete a admin
+//***delete a admin*/
 app.delete("/admin/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -73,4 +73,5 @@ app.delete("/admin/:id", async (req, res) => {
     console.log(err.message);
   }
 });
+
 module.exports = app;

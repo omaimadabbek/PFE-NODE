@@ -12,11 +12,14 @@ app.post("/detail_commandes", async (req, res) => {
       prix,
       id_client,
     } = req.body;
-
+    console.log(id_commandes, designation, quantité, prix, id_client);
+    const date = new Date();
+    const dateString = date.toISOString().substring(0, 10);
     const newDetail = await pool.query(
       `INSERT INTO detail_commandes (date_detail_cmd,id_commandes,designation,quantité,prix,id_client)
-             VALUES ('${date_detail_cmd}','${id_commandes}','${designation}','${quantité}','${prix}','${id_client}') RETURNING* `
+             VALUES ('${dateString}','${id_commandes}','${designation}','${quantité}','${prix}','${id_client}') RETURNING* `
     );
+    console.log("cc");
     res.json(newDetail);
   } catch (err) {
     console.error(err.message);
@@ -62,4 +65,5 @@ app.put("/detail_commandes/:id", async (req, res) => {
     console.error(err.message);
   }
 });
+
 module.exports = app;

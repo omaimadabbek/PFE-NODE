@@ -5,9 +5,9 @@ const cors = require("cors");
 const pool = require("./db");
 const Admin = require("./Admin");
 const Client = require("./Client");
-const Categorie = require("./Categorie");
-const Produit = require("./Produit");
-const Commande = require("./Commande");
+ const Categorie = require("./Categorie");
+ const Produit = require("./Produit");
+ const Commande = require("./Commande");
 const DetailCommande = require("./DetailCommande");
 
 //middleware
@@ -18,22 +18,30 @@ app.use(express.json());
 //**** Admin */
 app.post(Admin);
 
+
 app.use(express.static("images"));
-
-//**** Client */
-app.post(Client);
-
-//**** Categorie */
-app.post(Categorie);
-
-//**** Produit */
-app.post(Produit);
 
 //**** Commande */
 app.post(Commande);
 
+
+//**** Categorie */
+app.post(Categorie);
+
+
+
+//**** Produit */
+app.post(Produit);
+
+
+
 //**** DetailCommande */
-app.post(DetailCommande);
+ app.post(DetailCommande);
+
+
+//**** Client */
+ app.post(Client);
+
 
 app.listen(5000, () => {
   console.log("server has started on port 5000");

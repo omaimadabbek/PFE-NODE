@@ -11,10 +11,11 @@ app.post("/Commandes", async (req, res) => {
     const dateString = date.toISOString().substring(0, 10);
     const newCommandes = await pool.query(
       `INSERT INTO commandes (date_cmd,totalcommande,id_client,etat_commande,mdv,adresse)
-             VALUES ('${dateString}','${totalcommande}','${id_client}','${etat_commande}','${mdv}','${adresse}') RETURNING* `
+        VALUES ('${dateString}','${totalcommande}','${id_client}','${etat_commande}','${mdv}','${adresse}') RETURNING id_commandes `
     );
     if (newCommandes.rowCount > 0) {
-      res.json(newCommandes);
+      console.log("newCommandes", newCommandes);
+      res.json(newCommandes.rows[0]);
     }
     //
   } catch (err) {
