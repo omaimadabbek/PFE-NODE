@@ -2,6 +2,7 @@ const express = require("express");
 const pool = require("./db");
 const app = express.Router();
 
+app.use(express.static("images"));
 //***create a categorie***//
 app.post("/categorie", async (req, res) => {
   try {
@@ -70,6 +71,5 @@ app.delete("/categorie/:id", async (req, res) => {
     console.log(err.message);
   }
 });
-
 
 module.exports = app;

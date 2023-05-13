@@ -5,9 +5,9 @@ const cors = require("cors");
 const pool = require("./db");
 const Admin = require("./Admin");
 const Client = require("./Client");
- const Categorie = require("./Categorie");
- const Produit = require("./Produit");
- const Commande = require("./Commande");
+const Categorie = require("./Categorie");
+const Produit = require("./Produit");
+const Commande = require("./Commande");
 const DetailCommande = require("./DetailCommande");
 
 //middleware
@@ -16,32 +16,24 @@ app.use(express.json());
 
 //***ROUTES
 //**** Admin */
-app.post(Admin);
+app.use(Admin);
 
 
-app.use(express.static("images"));
 
 //**** Commande */
-app.post(Commande);
-
+app.use(Commande);
 
 //**** Categorie */
-app.post(Categorie);
-
-
+app.use(Categorie);
 
 //**** Produit */
-app.post(Produit);
-
-
+app.use(Produit);
 
 //**** DetailCommande */
- app.post(DetailCommande);
-
+app.use(DetailCommande);
 
 //**** Client */
- app.post(Client);
-
+app.use(Client);
 
 app.listen(5000, () => {
   console.log("server has started on port 5000");
@@ -66,7 +58,9 @@ app.post(
     //return res
     //.status(200)
     //.json(`${process.env.REACT_APP_API_URL}/` + originalname);
-    return res.status(200).json("http://localhost:5000/" + originalname);
+    return res
+      .status(200)
+      .json(`${process.env.REACT_APP_API_URL}` + originalname);
     //  return res.status(200).json("http://192.168.2.83:5003/" + originalname);
   }
 );
