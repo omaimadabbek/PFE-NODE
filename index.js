@@ -1,5 +1,6 @@
-const express = require("express"); //La première ligne référence / importe le module Express pour créer le serveur.
+const express = require("express");
 const app = express();
+const pg = require("pg");
 const multer = require("multer");
 const cors = require("cors");
 const pool = require("./db");
@@ -11,6 +12,63 @@ const Commande = require("./Commande");
 const DetailCommande = require("./DetailCommande");
 const Statistiques = require("./Statistiques");
 
+//****** Socket */
+
+const ServerSocket = require("socket.io");
+const server = require("http").createServer(app);
+
+app.use(function (req, res, next) {
+  // Website you wish to allow to connect
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  // Request methods you wish to allow
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  );
+  // Request headers you wish to allow
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With,content-type"
+  );
+  // Pass to next layer of middleware
+  next();
+});
+
+const io = ServerSocket(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["my-custom-header"],
+    credentials: true,
+  },
+});
+
+const dbUrl = "postgresql://postgres:oma@localhost:5433/postgres";
+const pgClient = new pg.Client(dbUrl);
+pgClient.connect((err) => {
+  if (err) {
+    console.log("🚀  err:", err);
+  }
+});
+
+io.on("connection", async (socket) => {
+  console.log("🚀 connection:");
+  await pgClient.query("LISTEN watchers");
+  io.emit("connection", socket.id);
+  socket.once("ready for data", (data) => {
+    pgClient.on("notification", async (data) => {
+      console.log("🚀 notification");
+      socket.emit("Nouvelle commande", {
+        message: "Nouvelle command",
+      });
+      socket.on("disconnect", () => {
+        socket.disconnect();
+      });
+    });
+  });
+});
+
+/**** */
 //middleware
 app.use(cors());
 app.use(express.json());
@@ -37,10 +95,6 @@ app.use(DetailCommande);
 //**** Client */
 app.use(Client);
 
-app.listen(5000, () => {
-  console.log("server has started on port 5000");
-});
-
 const imageUpload = multer({
   storage: multer.diskStorage({
     destination: function (req, file, cb) {
@@ -64,3 +118,8 @@ app.post(
     //  return res.status(200).json("http://192.168.2.83:5003/" + originalname);
   }
 );
+
+/////*************************** */
+server.listen(5000, () => {
+  console.log("Serveur démarré sur le port 5000");
+});
