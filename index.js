@@ -9,6 +9,7 @@ const Categorie = require("./Categorie");
 const Produit = require("./Produit");
 const Commande = require("./Commande");
 const DetailCommande = require("./DetailCommande");
+const Statistiques = require("./Statistiques");
 
 //middleware
 app.use(cors());
@@ -17,6 +18,9 @@ app.use(express.json());
 //***ROUTES
 //**** Admin */
 app.use(Admin);
+
+//***statistiques */
+app.use(Statistiques);
 
 //**** Commande */
 app.use(Commande);
