@@ -18,8 +18,6 @@ app.use(express.json());
 //**** Admin */
 app.use(Admin);
 
-
-
 //**** Commande */
 app.use(Commande);
 
@@ -58,9 +56,7 @@ app.post(
     //return res
     //.status(200)
     //.json(`${process.env.REACT_APP_API_URL}/` + originalname);
-    return res
-      .status(200)
-      .json(`${process.env.REACT_APP_API_URL}` + originalname);
+    return res.status(200).json(`http://192.168.1.12:5000/` + originalname);
     //  return res.status(200).json("http://192.168.2.83:5003/" + originalname);
   }
 );
