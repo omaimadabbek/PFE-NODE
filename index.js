@@ -42,7 +42,7 @@ const io = ServerSocket(server, {
     credentials: true,
   },
 });
-
+/***connexion base de donnee pour le sockrt */
 const dbUrl = "postgresql://postgres:oma@localhost:5433/postgres";
 const pgClient = new pg.Client(dbUrl);
 pgClient.connect((err) => {
@@ -50,7 +50,7 @@ pgClient.connect((err) => {
     console.log("🚀  err:", err);
   }
 });
-
+/***socket connecte */
 io.on("connection", async (socket) => {
   console.log("🚀 connection:");
   await pgClient.query("LISTEN watchers");
@@ -114,7 +114,7 @@ app.post(
     //return res
     //.status(200)
     //.json(`${process.env.REACT_APP_API_URL}/` + originalname);
-    return res.status(200).json(`http://192.168.1.12:5000/` + originalname);
+    return res.status(200).json(`http://192.168.2.22:5000/` + originalname);
     //  return res.status(200).json("http://192.168.2.83:5003/" + originalname);
   }
 );

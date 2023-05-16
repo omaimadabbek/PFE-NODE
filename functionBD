@@ -1,0 +1,32 @@
+
+
+
+
+-- DROP FUNCTION public.notify_trigger();
+/*** trigger retourner a la partie admin une notification quand j'ajoute ou modiefier cmd*/
+
+CREATE OR REPLACE FUNCTION public.notify_trigger()
+    RETURNS trigger
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE NOT LEAKPROOF
+AS $BODY$
+DECLARE
+BEGIN
+/***watchers pour retourne id commandes et id client*/
+ PERFORM pg_notify('watchers', TG_TABLE_NAME || ',id ,' || NEW.id_commandes || ',id_client,' || NEW.id_client );
+  RETURN new;
+END;
+$BODY$;
+
+
+ALTER FUNCTION public.notify_trigger()
+    OWNER TO postgres;
+	
+	
+	CREATE TRIGGER watched_table_trigger
+    AFTER INSERT
+    ON public.commandes
+    FOR EACH ROW
+    EXECUTE PROCEDURE  public.notify_trigger();
+

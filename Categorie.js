@@ -20,6 +20,7 @@ app.post("/categorie", async (req, res) => {
 app.get("/categorie", async (req, res) => {
   try {
     const allCategorie = await pool.query(`SELECT*FROM categorie`);
+  
     res.json(allCategorie.rows);
   } catch (err) {
     console.error(err.message);
