@@ -111,15 +111,13 @@ app.post(
   imageUpload.array("imgCollection"),
   function (req, res) {
     const { originalname } = req.files[0];
-    //return res
-    //.status(200)
-    //.json(`${process.env.REACT_APP_API_URL}/` + originalname);
+  
     return res.status(200).json(`http://192.168.2.22:5000/` + originalname);
-    //  return res.status(200).json("http://192.168.2.83:5003/" + originalname);
+  
   }
 );
 
-/////*************************** */
+
 server.listen(5000, () => {
   console.log("Serveur démarré sur le port 5000");
 });

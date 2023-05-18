@@ -18,10 +18,16 @@ app.post("/categorie", async (req, res) => {
 
 //***get all categorie***//
 app.get("/categorie", async (req, res) => {
+  const date = new Date();
   try {
     const allCategorie = await pool.query(`SELECT*FROM categorie`);
-  
-    res.json(allCategorie.rows);
+    let data = allCategorie.rows;
+    for (categorie of data) {
+      const image =
+        categorie.image.split("/")[categorie.image.split("/").length - 1];
+      categorie.image = "http://192.168.2.22:5000/" + image;
+    }
+    res.json(data);
   } catch (err) {
     console.error(err.message);
   }

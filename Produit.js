@@ -24,8 +24,14 @@ app.get("/produits", async (req, res) => {
   try {
     const { id } = req.params;
     const produits = await pool.query(`SELECT * FROM produits  `);
+    let data = produits.rows;
+    for (produit of data) {
+      const image =
+        produit.image.split("/")[produit.image.split("/").length - 1];
+      produit.image = "http://192.168.2.22:5000/" + image;
+    }
 
-    res.json(produits.rows);
+    res.json(data);
   } catch (err) {
     console.error(err.message);
   }

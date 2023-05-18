@@ -39,7 +39,7 @@ async function sendMail(
     from: "RESTAURANT DABBEK " + transporterConfig.auth.user,
     to: mail,
     // cc :
-    subject: status ? "COMMANDE ACCEPTÉE" : "COMMANDE REFUSÉE",
+    subject: status ? "RESTAURANT DABBEK" : "RESTAURANT DABBEK",
     text: htmlData,
   };
   return transporter.sendMail(mailOptions, function (err) {
