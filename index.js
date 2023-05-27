@@ -59,7 +59,7 @@ io.on("connection", async (socket) => {
     pgClient.on("notification", async (data) => {
       console.log("🚀 notification");
       socket.emit("Nouvelle commande", {
-        message: "Nouvelle command",
+        message: "",
       });
       socket.on("disconnect", () => {
         socket.disconnect();
@@ -111,12 +111,10 @@ app.post(
   imageUpload.array("imgCollection"),
   function (req, res) {
     const { originalname } = req.files[0];
-  
+
     return res.status(200).json(`http://192.168.2.22:5000/` + originalname);
-  
   }
 );
-
 
 server.listen(5000, () => {
   console.log("Serveur démarré sur le port 5000");

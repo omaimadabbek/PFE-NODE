@@ -25,7 +25,7 @@ app.get("/categorie", async (req, res) => {
     for (categorie of data) {
       const image =
         categorie.image.split("/")[categorie.image.split("/").length - 1];
-      categorie.image = "http://192.168.2.22:5000/" + image;
+      categorie.image = "http://192.168.1.18:5000/" + image;
     }
     res.json(data);
   } catch (err) {

@@ -28,7 +28,7 @@ app.get("/produits", async (req, res) => {
     for (produit of data) {
       const image =
         produit.image.split("/")[produit.image.split("/").length - 1];
-      produit.image = "http://192.168.2.22:5000/" + image;
+      produit.image = "http://192.168.1.18:5000/" + image;
     }
 
     res.json(data);

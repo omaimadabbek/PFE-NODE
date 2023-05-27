@@ -33,31 +33,58 @@ app.get("/Topclient", async (req, res) => {
   }
 });
 
-//chiffres d'affaires mensuels
+//chiffres affaires mensuels
 app.get("/caMensuel", async (req, res) => {
   try {
+
     let sql = `
-  SELECT
- commandes.date_cmd  AS Month ,
- to_char( commandes.date_cmd, 'yyyy/mm/dd') AS Date ,
-	SUM(CAST(totalcommande AS decimal))
-    FROM commandes
-	  GROUP BY Month
-	   ORDER BY date_cmd
-    `;
+      SELECT
+    * 
+        FROM detail_commandes
+
+        `;
 
     const chiffreAffaires = await pool.query(sql);
 
     let data = {
       data: [],
       labels: [],
+      prix: [],
     };
 
+    let array = [];
+
     for (const element of chiffreAffaires.rows) {
-      data.labels.push(element.date);
-      data.data.push(element.sum);
+      let bb = Number(element.quantité) * Number(element.prix);
+      array.push({
+        des: element.designation,
+        qte: element.quantité,
+        prix: bb,
+      });
+    }
+    const resultat = {};
+
+    for (const produit of array) {
+      if (resultat.hasOwnProperty(produit.des)) {
+        resultat[produit.des].qte += produit.qte;
+      } else {
+        resultat[produit.des] = {
+          des: produit.des,
+          qte: produit.qte,
+          prix: produit.prix,
+        };
+      }
     }
 
+    const nouveauTableau = Object.values(resultat);
+    nouveauTableau.sort((a, b) => b.qte - a.qte); // Trie les produits en fonction de la quantité (ordre décroissant)
+    const cinqPlusGrands = nouveauTableau.slice(0, 5);
+
+    cinqPlusGrands.forEach((el) => {
+      data.labels.push(el.des);
+      data.data.push(el.qte);
+      data.prix.push(el.prix);
+    });
     res.json(data);
   } catch (error) {
     console.log(error.message);
