@@ -2,54 +2,54 @@ const express = require("express");
 const pool = require("./db");
 const app = express.Router();
 
-const nodemailer = require("nodemailer");
-const { google } = require("googleapis");
+// const nodemailer = require("nodemailer");
+// const { google } = require("googleapis");
 
-const CLIENT_ID =
-  "284565428368-su248oh2jgnssd0gfavg76gih9sfilig.apps.googleusercontent.com";
-const CLIENT_SECRET = "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";
-const REDIRECT_URI = "https://developers.google.com/oauthplayground";
-const REFRESH_TOKEN =
-  "1//04x8K-OZ9TgJbCgYIARAAGAQSNwF-L9IrOTcl3pk16vM7965GEtb64qzi9H_6Mhv3AtGn68zyhQCIQy2VNmqaiO52yE_yQHFgimc";
-const oAuth2Client = new google.auth.OAuth2(
-  CLIENT_ID,
-  CLIENT_SECRET,
-  REDIRECT_URI
-);
-oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
-const accessToken = oAuth2Client.getAccessToken();
-async function sendMail(
-  htmlData,
-  mail,
-  status,
-  transporterConfig = {
-    service: "gmail",
-    auth: {
-      type: "OAuth2",
-      user: "omaymadabbek@gmail.com",
-      clientId: CLIENT_ID,
-      clientSecret: CLIENT_SECRET,
-      refreshToken: REFRESH_TOKEN,
-      accessToken: accessToken,
-    },
-  }
-) {
-  const transporter = nodemailer.createTransport(transporterConfig);
-  const mailOptions = {
-    from: "RESTAURANT DABBEK " + transporterConfig.auth.user,
-    to: mail,
-    // cc :
-    subject: status ? "RESTAURANT DABBEK" : "RESTAURANT DABBEK",
-    text: htmlData,
-  };
-  return transporter.sendMail(mailOptions, function (err) {
-    if (err) {
-      console.log("Error", err);
-    } else {
-      console.log("Email sent !!!!!");
-    }
-  });
-}
+// const CLIENT_ID =
+//   "284565428368-su248oh2jgnssd0gfavg76gih9sfilig.apps.googleusercontent.com";
+// const CLIENT_SECRET = "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";
+// const REDIRECT_URI = "https://developers.google.com/oauthplayground";
+// const REFRESH_TOKEN =
+//   "1//04x8K-OZ9TgJbCgYIARAAGAQSNwF-L9IrOTcl3pk16vM7965GEtb64qzi9H_6Mhv3AtGn68zyhQCIQy2VNmqaiO52yE_yQHFgimc";
+// const oAuth2Client = new google.auth.OAuth2(
+//   CLIENT_ID,
+//   CLIENT_SECRET,
+//   REDIRECT_URI
+// );
+// oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
+// const accessToken = oAuth2Client.getAccessToken();
+// async function sendMail(
+//   htmlData,
+//   mail,
+//   status,
+//   transporterConfig = {
+//     service: "gmail",
+//     auth: {
+//       type: "OAuth2",
+//       user: "omaymadabbek@gmail.com",
+//       clientId: CLIENT_ID,
+//       clientSecret: CLIENT_SECRET,
+//       refreshToken: REFRESH_TOKEN,
+//       accessToken: accessToken,
+//     },
+//   }
+// ) {
+//   const transporter = nodemailer.createTransport(transporterConfig);
+//   const mailOptions = {
+//     from: "RESTAURANT DABBEK " + transporterConfig.auth.user,
+//     to: mail,
+//     // cc :
+//     subject: status ? "RESTAURANT DABBEK" : "RESTAURANT DABBEK",
+//     text: htmlData,
+//   };
+//   return transporter.sendMail(mailOptions, function (err) {
+//     if (err) {
+//       console.log("Error", err);
+//     } else {
+//       console.log("Email sent !!!!!");
+//     }
+//   });
+// }
 
 //***create a commandes*/
 app.post("/Commandes", async (req, res) => {

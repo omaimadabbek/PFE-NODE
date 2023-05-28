@@ -43,7 +43,7 @@ const io = ServerSocket(server, {
   },
 });
 /***connexion base de donnee pour le sockrt */
-const dbUrl = "postgresql://postgres:oma@localhost:5433/postgres";
+const dbUrl = "postgresql://postgres:ouma@localhost:5432/postgres";
 const pgClient = new pg.Client(dbUrl);
 pgClient.connect((err) => {
   if (err) {
